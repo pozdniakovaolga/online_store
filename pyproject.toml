@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "online-store"
+version = "0.1.0"
+description = ""
+authors = ["pozdniakova olga <caramelca07@mail.ru>"]
+readme = "README.md"
+packages = [{include = "online_store"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+poetry = "^1.5.1"
+django = "^4.2.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
