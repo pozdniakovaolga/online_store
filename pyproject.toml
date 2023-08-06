@@ -10,6 +10,9 @@ packages = [{include = "online_store"}]
 python = "^3.11"
 poetry = "^1.5.1"
 django = "^4.2.3"
+psycopg2-binary = "^2.9.7"
+pillow = "^10.0.0"
+ipython = "^8.14.0"
 
 
 [build-system]
