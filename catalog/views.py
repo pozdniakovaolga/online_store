@@ -9,7 +9,6 @@ def index(request):
 
 def contact(request):
     contact_info = Contacts.objects.get(pk=1).__dict__
-    print (contact_info)
     if request.method == 'POST':
         name = request.POST.get('name')
         phone = request.POST.get('phone')
