@@ -1,5 +1,7 @@
+from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render
-from catalog.models import Product, Contacts
+from catalog.models import Product, Contacts, Category
+import os
 
 
 def index(request):
@@ -27,3 +29,29 @@ def products(request):
         'object_list': products_list
     }
     return render(request, 'catalog/products.html', context)
+
+
+def add_products(request):
+    categories_list = Category.objects.all()
+    context = {
+        'object_list': categories_list
+    }
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        preview = request.POST.get('preview')
+
+        if 'preview' in request.FILES:  # если изображение указано
+            file = request.FILES['preview']
+            fs = FileSystemStorage(location='media/products/')
+            filename = fs.save(file.name, file)
+            preview = "products/"+os.path.basename(fs.url(filename))
+        else:
+            preview = 'products/no_image.png'  # если изображение не указано, используем заглушку
+
+        category = request.POST.get('category')
+        price = request.POST.get('price')
+        date = request.POST.get('date')
+        last_update = request.POST.get('date')
+        Product.objects.create(title=title, description=description, preview=preview, category_id=category, price=price, date=date, last_update=last_update)
+    return render(request, 'catalog/add_products.html', context)
