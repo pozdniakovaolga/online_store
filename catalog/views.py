@@ -2,6 +2,7 @@ from django.core.files.storage import FileSystemStorage
 from django.shortcuts import render
 from catalog.models import Product, Contacts, Category
 import os
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
 def index(request):
@@ -24,10 +25,20 @@ def contact(request):
 
 
 def products(request):
-    products_list = Product.objects.all()
+    products_list = Product.objects.all().order_by('-id')  # получаем отсортированный список всех продуктов
+    paginator = Paginator(products_list, 9)  # передаём классу Paginator список, указываем кол. элементов на одну стр.
+    page = request.GET.get('page')
+    try:
+        prods = paginator.page(page)
+    except PageNotAnInteger:
+        prods = paginator.page(1)
+    except EmptyPage:
+        prods = paginator.page(paginator.num_pages)
+
     context = {
-        'object_list': products_list
+        'object_list': prods
     }
+
     return render(request, 'catalog/products.html', context)
 
 
