@@ -3,7 +3,7 @@ from django import template
 register = template.Library()
 
 
-@register.filter()  #используется в products.html
+@register.filter()  #используется в product_list.html
 def mediapath(value):
     if value:
         return f'/media/{value}'
