@@ -32,16 +32,16 @@
 
         <div id="pages" align="center">
 
-            {% if object_list.has_previous %}
-                <a href="?page={{ object_list.previous_page_number }}">Предыдущая</a>
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page.obj.previous_page_number }}">Предыдущая</a>
             {% endif %}
 
             <span class="current">
-                Страница {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}.
             </span>
 
-            {% if object_list.has_next %}
-                <a href="?page={{ object_list.next_page_number }}">Следующая</a>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
             {% endif %}
         </div>
 
