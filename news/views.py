@@ -3,6 +3,9 @@ from django.views.generic import CreateView, ListView, DetailView, UpdateView, D
 from news.models import Article
 from pytils.translit import slugify
 
+from django.core.mail import send_mail
+from django.conf import settings
+
 
 class ArticleCreateView(CreateView):
     model = Article
@@ -35,6 +38,13 @@ class ArticleDetailView(DetailView):
         self.object = super().get_object(queryset)
         self.object.views_count += 1
         self.object.save()
+        if self.object.views_count == 100:  # отправка email при 100 просмотрах
+            send_mail(
+                subject="Django: новое достижение",
+                message=f'Поздравляем! Ваша статья "{self.object.title}" набрала 100 просмотров',
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=['pozdniakovaolga88@gmail.com']
+            )
         return self.object
 
 
