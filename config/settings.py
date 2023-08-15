@@ -143,4 +143,4 @@ EMAIL_PORT = 465
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = 'django-olga@yandex.ru'
-EMAIL_HOST_PASSWORD = 'bogtmrwkxjvecuqu'
+EMAIL_HOST_PASSWORD = localconfig.EMAIL_PASSWORD
