@@ -43,7 +43,7 @@ class ArticleDetailView(DetailView):
                 subject="Django: новое достижение",
                 message=f'Поздравляем! Ваша статья "{self.object.title}" набрала 100 просмотров',
                 from_email=settings.EMAIL_HOST_USER,
-                recipient_list=['pozdniakovaolga88@gmail.com']
+                recipient_list=settings.EMAIL_RECEPIENT_LIST
             )
         return self.object
 
