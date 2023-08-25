@@ -11,19 +11,23 @@
         <div class="col-lg-9 col-md-6 col-sm-12">
             <div class="card mb-4 box-shadow">
                 <div class="card-body">
-                    <table class="table table-striped">
+                    <table class="table">
+                        <thead>
                         <tr>
-                            <td class="w-25">Телефон доставки</td>
-                            <td>{{ object.phone_delivery }}</td>
+                        <th scope="col">Телефон доставки</th>
+                        <th scope="col">Телефон руководства</th>
+                        <th scope="col">E-mail</th>
                         </tr>
-                        <tr>
-                            <td class="w-25">Телефон руководства</td>
-                            <td>{{ object.phone_seo }}</td>
-                        </tr>
-                        <tr>
-                            <td class="w-25">E-mail</td>
-                            <td>{{ object.email }}</td>
-                        </tr>
+                        </thead>
+                       {% for object in object_list %}
+                       <tbody>
+                       <tr>
+                       <td>{{ object.phone_delivery}}</td>
+                       <td>{{ object.phone_seo}}</td>
+                       <td>{{ object.email}}</td>
+                       </tr>
+                       </tbody>
+                      {% endfor %}
                     </table>
                 </div>
             </div>

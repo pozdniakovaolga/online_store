@@ -20,14 +20,11 @@ class IndexView(TemplateView):
 class ContactView(TemplateView):
     """Контроллер просмотра контактов"""
     template_name = 'catalog/contact.html'
-    try:
-        contact_data = Contacts.objects.get(pk=1)  # контактные данные
-    except Exception:
-        contact_data = Contacts(phone_delivery="Ваш телефон доставки", phone_seo="Ваш телефон руководства",
-                                email="Ваш E-mail")
-    extra_context = {
-        'object': contact_data
-    }
+
+    def get_context_data(self, **kwargs):  # переопределение метода
+        context_data = super().get_context_data(**kwargs)  # вызов метода у родительского класса
+        context_data['object_list'] = Contacts.objects.all().order_by('-id')[:1]  # добавление новых данных
+        return context_data
 
     def post(self, request):  # добавление метода post
         if self.request.method == 'POST':
