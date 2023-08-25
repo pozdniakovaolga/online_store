@@ -25,9 +25,3 @@ class VersionAdmin(admin.ModelAdmin):
 class ContactsAdmin(admin.ModelAdmin):
     list_display = ('id', 'phone_delivery', 'phone_seo', 'email',)
     list_editable = ('phone_delivery', 'phone_seo', 'email',)
-
-    def has_add_permission(self, request):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
-        return False
