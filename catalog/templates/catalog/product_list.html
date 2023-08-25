@@ -8,25 +8,35 @@
 </div>
 
 <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+        <a href="{% url 'catalog:product_create' %}" class="btn btn-sm btn-outline-danger">Добавить продукт</a>
+    </div>
+    <br>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
 {% for object in object_list %}
-        <div class="col">
-          <div class="card shadow-sm">
+    <div class="col">
+        <div class="card shadow-sm">
             <img src="{{ object.preview|mediapath }}" />
-              <p class="text-center fw-bold">{{ object }}</p>
-
-            <div class="card-body">
-              <p class="card-text">{{ object.description }}</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">В корзину</button>
-                </div>
-                <small class="text-muted">{{ object.price }} руб. </small>
-              </div>
-            </div>
-          </div>
+                <p class="text-center fw-bold">
+                    {{ object }}
+                    {% for version in object.version_set.all %}
+                    {% if version.is_active == True %}
+                    <br>Версия: {{ version.number }} "{{ version.title }}"
+                    {% endif %}
+                    {% endfor%}
+                </p>
+                    <div class="card-body">
+                        <p class="card-text">
+                            {{ object.description }}
+                        </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="{% url 'catalog:product_detail' object.pk %}" class="btn btn-outline-warning">Подробнее</a>
+                                <small class="text-muted">{{ object.price }} руб. </small>
+                            </div>
+                    </div>
         </div>
+    </div>
 {% endfor %}
     </div>
 

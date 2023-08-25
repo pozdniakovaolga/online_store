@@ -1,5 +1,7 @@
-from django.urls import reverse_lazy,reverse
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
+
+from news.forms import ArticleForm
 from news.models import Article
 from pytils.translit import slugify
 
@@ -8,8 +10,9 @@ from django.conf import settings
 
 
 class ArticleCreateView(CreateView):
+    """Контроллер создания статьи"""
     model = Article
-    fields = ('title', 'body', 'preview', 'date',)
+    form_class = ArticleForm
     success_url = reverse_lazy('news:list')
 
     def form_valid(self, form):  # динамическое формирование slug name для заголовка при создании статьи
@@ -22,6 +25,7 @@ class ArticleCreateView(CreateView):
 
 
 class ArticleListView(ListView):
+    """Контроллер просмотра списка статей"""
     model = Article
     paginate_by = 3  # количество элементов на одну страницу
 
@@ -32,6 +36,7 @@ class ArticleListView(ListView):
 
 
 class ArticleDetailView(DetailView):
+    """Контроллер просмотра отдельной статьи"""
     model = Article
 
     def get_object(self, queryset=None):  # добавление счетчика просмотров
@@ -49,8 +54,9 @@ class ArticleDetailView(DetailView):
 
 
 class ArticleUpdateView(UpdateView):
+    """Контроллер редактирования статьи"""
     model = Article
-    fields = ('title', 'body', 'preview', 'date',)
+    form_class = ArticleForm
 
     def form_valid(self, form):  # динамическое изменение slug name для заголовка при редактировании статьи
         if form.is_valid():
@@ -65,5 +71,6 @@ class ArticleUpdateView(UpdateView):
 
 
 class ArticleDeleteView(DeleteView):
+    """Контроллер удаления статьи"""
     model = Article
     success_url = reverse_lazy('news:list')

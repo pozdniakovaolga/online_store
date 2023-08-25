@@ -2,9 +2,9 @@ from django.db import models
 
 
 class Category(models.Model):
+    """Категория товара"""
     title = models.CharField(max_length=100, verbose_name='Наименование')
     description = models.TextField(verbose_name='Описание')
-    #created = models.CharField(max_length=250, default='п/п продукты', verbose_name='Состав')
 
     def __str__(self):
         return f'{self.title}'
@@ -15,6 +15,7 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    """Продукт"""
     title = models.CharField(max_length=100, verbose_name='Наименование')
     description = models.TextField(verbose_name='Описание')
     preview = models.ImageField(upload_to='products/', null=True, blank=True, verbose_name='Изображение')
@@ -32,6 +33,7 @@ class Product(models.Model):
 
 
 class Contacts(models.Model):
+    """Контакты пиццерии"""
     phone_delivery = models.CharField(max_length=50, verbose_name='Телефон доставки')
     phone_seo = models.CharField(max_length=50, verbose_name='Телефон руководства')
     email = models.CharField(max_length=50, verbose_name='E-mail')
@@ -42,3 +44,18 @@ class Contacts(models.Model):
     class Meta:
         verbose_name = 'контакт'
         verbose_name_plural = 'контакты'
+
+
+class Version(models.Model):
+    """Версия продукта"""
+    number = models.PositiveSmallIntegerField(verbose_name='Номер')
+    title = models.CharField(max_length=100, verbose_name='Наименование')
+    product = models.ForeignKey('Product', on_delete=models.CASCADE, verbose_name='Продукт')
+    is_active = models.BooleanField(verbose_name='Признак текущей версии')
+
+    def __str__(self):
+        return f'{self.number}: {self.title}'
+
+    class Meta:
+        verbose_name = 'версия'
+        verbose_name_plural = 'версии'

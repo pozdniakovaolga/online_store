@@ -3,6 +3,7 @@ from django.urls import reverse
 
 
 class Article(models.Model):
+    """Статья"""
     title = models.CharField(max_length=100, verbose_name='Заголовок')
     slug = models.CharField(max_length=20, verbose_name='slug', null=True, blank=True,)
     body = models.TextField(verbose_name='Содержимое')
