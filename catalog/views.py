@@ -20,7 +20,11 @@ class IndexView(TemplateView):
 class ContactView(TemplateView):
     """Контроллер просмотра контактов"""
     template_name = 'catalog/contact.html'
-    contact_data = Contacts.objects.get(pk=1)  # контактные данные
+    try:
+        contact_data = Contacts.objects.get(pk=1)  # контактные данные
+    except Exception:
+        contact_data = Contacts(phone_delivery="Ваш телефон доставки", phone_seo="Ваш телефон руководства",
+                                email="Ваш E-mail")
     extra_context = {
         'object': contact_data
     }
