@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     'catalog',
     'news',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +81,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'shop',
+        'NAME': 'pizza_boss',
         'USER': 'postgres',
         'PASSWORD': localconfig.PASSWORD
     }
@@ -144,4 +145,11 @@ EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = localconfig.EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = localconfig.EMAIL_PASSWORD
-EMAIL_RECEPIENT_LIST  =  localconfig.EMAIL_RECEPIENT_LIST
+EMAIL_RECEPIENT_LIST = localconfig.EMAIL_RECEPIENT_LIST
+
+#EMAIL_FILE_PATH = BASE_DIR / 'users'/ 'sent_emails'
+
+AUTH_USER_MODEL = 'users.User'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'

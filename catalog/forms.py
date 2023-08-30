@@ -7,7 +7,7 @@ class ProductForm(forms.ModelForm):
     """Форма для создания/редактирования продукта"""
     class Meta:
         model = Product
-        fields = "__all__"
+        exclude = ('created_by',)
 
     def __init__(self, *args, **kwargs):  # стилизация формы
         super().__init__(*args, **kwargs)

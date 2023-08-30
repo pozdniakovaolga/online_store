@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.views import View
 from catalog.models import Product, Contacts, Version
 from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DetailView, DeleteView
 from django.urls import reverse_lazy
@@ -6,14 +7,23 @@ from catalog.forms import ProductForm, VersionForm
 from django.forms import inlineformset_factory
 
 
+class AccessRightsMixinView(View):
+    """Миксин ограничения доступа для неавторизованных пользователей"""
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('catalog:access_error')
+        return super().dispatch(request, *args, **kwargs)
+
+
 class IndexView(TemplateView):
     """Контроллер просмотра домашней страницы"""
     template_name = 'catalog/index.html'
 
-    def get_context_data(self, **kwargs):  # переопределение метода
-        context_data = super().get_context_data(**kwargs)  # вызов метода у родительского класса
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
         print(Product.objects.all().order_by('-date')[:5])  # вывод в консоль последних 5 продуктов
-        context_data['object_list'] = Product.objects.all()  # добавление новых данных
+        context_data['object_list'] = Product.objects.all()
         return context_data
 
 
@@ -21,9 +31,9 @@ class ContactView(TemplateView):
     """Контроллер просмотра контактов"""
     template_name = 'catalog/contact.html'
 
-    def get_context_data(self, **kwargs):  # переопределение метода
-        context_data = super().get_context_data(**kwargs)  # вызов метода у родительского класса
-        context_data['object_list'] = Contacts.objects.all().order_by('-id')[:1]  # добавление новых данных
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['object_list'] = Contacts.objects.all().order_by('-id')[:1]  # актуальные контактные данные
         return context_data
 
     def post(self, request):  # добавление метода post
@@ -41,14 +51,22 @@ class ProductListView(ListView):
     paginate_by = 9  # количество элементов на одну страницу
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(AccessRightsMixinView, CreateView):
     """Контроллер создания продукта"""
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:product_list')
 
+    def form_valid(self, form):  # автоматическое формирование автора продукта
+        if form.is_valid():
+            product = form.save()
+            product.created_by = self.request.user
+            product.save()
 
-class ProductUpdateView(UpdateView):
+        return super().form_valid(form)
+
+
+class ProductUpdateView(AccessRightsMixinView, UpdateView):
     """Контроллер редактирования продукта"""
     model = Product
     form_class = ProductForm
@@ -69,7 +87,7 @@ class ProductUpdateView(UpdateView):
             formset.instance = self.object
             formset.save()
 
-        # проверка на наличие единственной активной версии у продукта
+        # проверка наличия единственной активной версии у продукта
         active_versions = Version.objects.filter(product=self.object, is_active=True)
         if active_versions.count() > 1:
             form.add_error(None, 'Выберите только одну активную версию')
@@ -83,7 +101,12 @@ class ProductDetailView(DetailView):
     model = Product
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(AccessRightsMixinView, DeleteView):
     """Контроллер удаления продукта"""
     model = Product
     success_url = reverse_lazy('catalog:product_list')
+
+
+class AccessErrorView(TemplateView):
+    """Контроллер ошибки доступа"""
+    template_name = 'catalog/access_error.html'

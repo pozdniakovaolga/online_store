@@ -23,5 +23,5 @@ class VersionAdmin(admin.ModelAdmin):
 
 @admin.register(Contacts)
 class ContactsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'phone_delivery', 'phone_seo', 'email',)
-    list_editable = ('phone_delivery', 'phone_seo', 'email',)
+    list_display = ('id', 'phone_delivery', 'phone_ceo', 'email',)
+    list_editable = ('phone_delivery', 'phone_ceo', 'email',)

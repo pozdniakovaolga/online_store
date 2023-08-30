@@ -1,6 +1,6 @@
 from django.urls import path
 from catalog.views import IndexView, ProductListView, ContactView, ProductCreateView
-from catalog.views import ProductDetailView, ProductUpdateView, ProductDeleteView
+from catalog.views import ProductDetailView, ProductUpdateView, ProductDeleteView, AccessErrorView
 from catalog.apps import CatalogConfig
 
 app_name = CatalogConfig.name
@@ -13,4 +13,5 @@ urlpatterns = [
     path('view/<int:pk>/', ProductDetailView.as_view(), name='product_detail'),
     path('edit/<int:pk>/', ProductUpdateView.as_view(), name='product_update'),
     path('delete/<int:pk>/', ProductDeleteView.as_view(), name='product_delete'),
+    path('403error/', AccessErrorView.as_view(), name='access_error'),
 ]
