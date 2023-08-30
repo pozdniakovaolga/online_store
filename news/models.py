@@ -5,7 +5,7 @@ from django.urls import reverse
 class Article(models.Model):
     """Статья"""
     title = models.CharField(max_length=100, verbose_name='Заголовок')
-    slug = models.CharField(max_length=20, verbose_name='slug', null=True, blank=True,)
+    slug = models.CharField(max_length=20, verbose_name='slug', null=True, blank=True)
     body = models.TextField(verbose_name='Содержимое')
     preview = models.ImageField(upload_to='articles/', null=True, blank=True, verbose_name='Изображение')
     date = models.DateField(verbose_name='Дата создания')

@@ -21,6 +21,7 @@ class Product(models.Model):
     preview = models.ImageField(upload_to='products/', null=True, blank=True, verbose_name='Изображение')
     category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Категория')
     price = models.PositiveIntegerField(verbose_name='Цена за покупку')
+    created_by = models.ForeignKey('users.User', on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Автор')
     date = models.DateField(verbose_name='Дата создания')
     last_update = models.DateField(verbose_name='Дата последнего изменения')
 
@@ -35,11 +36,11 @@ class Product(models.Model):
 class Contacts(models.Model):
     """Контакты пиццерии"""
     phone_delivery = models.CharField(max_length=50, verbose_name='Телефон доставки')
-    phone_seo = models.CharField(max_length=50, verbose_name='Телефон руководства')
+    phone_ceo = models.CharField(max_length=50, verbose_name='Телефон руководства')
     email = models.CharField(max_length=50, verbose_name='E-mail')
 
     def __str__(self):
-        return f'{self.phone_delivery}, {self.phone_seo}, {self.email}'
+        return f'{self.phone_delivery}, {self.phone_ceo}, {self.email}'
 
     class Meta:
         verbose_name = 'контакт'
