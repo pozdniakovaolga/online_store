@@ -6,6 +6,8 @@ from django.urls import reverse_lazy
 from catalog.forms import ProductForm, VersionForm
 from django.forms import inlineformset_factory
 
+from catalog.services import get_cashed_category_list
+
 
 class AccessRightsMixinView(View):
     """Миксин ограничения доступа для неавторизованных пользователей"""
@@ -24,6 +26,7 @@ class IndexView(TemplateView):
         context_data = super().get_context_data(**kwargs)
         print(Product.objects.all().order_by('-date')[:5])  # вывод в консоль последних 5 продуктов
         context_data['object_list'] = Product.objects.all()
+        context_data['category_list'] = get_cashed_category_list()
         return context_data
 
 

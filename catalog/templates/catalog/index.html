@@ -30,11 +30,9 @@
                 <div class="card-body">
                     <h3 class="card-title">Категории</h3>
                          <ul class="list-unstyled mt-5 mb-5 text-small m-5 fs-5">
-                             <li><a class="text-muted" href="#">Пицца</a></li>
-                             <li><a class="text-muted" href="#">Закуски</a></li>
-                             <li><a class="text-muted" href="#">Соусы</a></li>
-                             <li><a class="text-muted" href="#">Десерты</a></li>
-                             <li><a class="text-muted" href="#">Напитки</a></li>
+                             {% for category in category_list %}
+                             <li> {{ category }}</li>
+                             {% endfor %}
                          </ul>
                 <button type="button" class="btn btn-lg btn-block btn-outline-primary">Оформить заказ</button>
                 </div>
